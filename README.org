@@ -8,7 +8,7 @@ Trivial??  Ok...
 
 But if you have named subgroups, you can postprocess the matched strings
 through a preprocessor dict =ppers=
-* Version 2
+* Version 3
 - Towards more generic dsl status
 - At shell: postprocessing still hardwired
 - Generic from inside python
@@ -54,14 +54,7 @@ $ ./redsl.py IBM.A
 {'series': 'A', 'scrip': 'IBM', 'issued': False, 'sertype': 'Plain', 'rights': False}
 #+END_SRC
 
-Unfortunately currently the postprocessing dict (ppers) is hardwired
-into the script.
 
 So...
-* PROBLEM
-How to pass a post-processing dict at the shell??? \\
-IOW I want to get the stuff between the
-=### DSL instance start=
-and
-=### DSL instance end=
-out of =redsl.py=
+* postprocessors
+currently hardwired into a file postprocessors.py
