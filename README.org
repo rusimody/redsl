@@ -59,4 +59,10 @@ into the script.
 
 So...
 * PROBLEM
-How to pass a post-processing dict at the shell???
+How to pass a post-processing dict at the shell??? \\
+IOW I want to get the stuff between the 
+### DSL instance start
+and 
+### DSL instance end
+
+out of =redsl.py=
