@@ -1,4 +1,7 @@
 # DSL (instantiation) for describing NYSE symbology
+# From https://www.nyse.com/publicdocs/nyse/markets/amex-options/ArcaDirectAPISpecVersion4_1.pdf
+# Symbology table pg 12
+
 (?=^.+$)				# There better be something >=1
 ^					# From beginning
 (?P<scrip>		[A-Z]*)		# The base scrip
