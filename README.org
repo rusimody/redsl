@@ -1,25 +1,14 @@
 #+TITLE: redsl
 #+OPTIONS: toc:nil
-* Version 0
-Written in perl
-
-No I dont pretend to know perl :-)
+* Version 1
+- Written in python
+- re broken off into separate file: symbology.txt
+- postprocessing quite hardwired
 * Usage
-** canonicalize.pl
 #+BEGIN_SRC shell
-$ perl canonicalize.pl IBM.A  (IBM, Ok.Plain, Ok.A, False)
-$ perl canonicalize.pl IBM  (IBM, None, None, False)
-$ perl canonicalize.pl IBM.A# (IBM, Ok.Plain, Ok.A, True)
-#+END_SRC
-** symbology.gs
-#+BEGIN_SRC haskell
-? serialize.(IBM, (Ok.Plain, Ok.A, False))
-IBM.A
-? serialize.(IBM, (None, Ok.A, False))
-IBMA
-#+END_SRC
-Hmm Thats a problem!
-#+BEGIN_SRC haskell
-? serialize.(IBM, (Ok.Warrant, Ok.A, True))
-IBM+A#
+$ python canonsepdsl.py IBM
+scrip:	IBM
+type:	No Series Type
+series:	None
+issued:	False
 #+END_SRC
