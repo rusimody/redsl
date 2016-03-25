@@ -1,0 +1,13 @@
+.gitattributes	text
+.gitignore	text
+
+*.py		text
+*.pl		text
+
+*.org		text
+*.txt		text
+*.TXT		text
+*.rst		text
+
+README		text
+ChangeLog	text
