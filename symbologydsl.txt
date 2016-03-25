@@ -1,7 +1,0 @@
-# DSL (instantiation) for describing NYSE symbology
-^
-(?P<scrip>	     [A-Z]*)     # The base scrip
-(?P<serchar>	     [.+-])?     # Series type char
-(?P<series>	     [A-Z])?     # Series
-(?P<issuedc>	     [#])?       # issued char indicator
-$		     		 # Thats all (there should be!)
