@@ -1,0 +1,9 @@
+# DSL (instantiation) for describing NYSE symbology
+(?=^.+$)				# There better be something >=1
+^					# From beginning
+(?P<scrip>		[A-Z]*)		# The base scrip
+(?P<sertype>		[.+-])?		# Series type char
+(?P<series>		[A-QS-Z])?	# Series
+(?P<rights>		[R])?		# Series
+(?P<issued>		[#])?		# issued char indicator
+$					# Thats all (there should be!)

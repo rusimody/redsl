@@ -1,14 +1,62 @@
 #+TITLE: redsl
 #+OPTIONS: toc:nil
-* Version 1
-- Written in python
-- re broken off into separate file: symbology.txt
-- postprocessing quite hardwired
+* Redsl
+is a dsl for re's (regexps).
+ie You can put the re into a file rather than into ~r"""...~ strings
+
+Trivial??  Ok...
+
+But if you have named subgroups, you can postprocess the matched strings
+through a preprocessor dict =ppers=
+* Version 2
+- Towards more generic dsl status
+- At shell: postprocessing still hardwired
+- Generic from inside python
 * Usage
-#+BEGIN_SRC shell
-$ python canonsepdsl.py IBM
-scrip:	IBM
-type:	No Series Type
-series:	None
-issued:	False
+** Inside python
+#+BEGIN_SRC python
+>>> re = """
+... (?P<a_num>    [0-9]*)   # Get an integer
+... (?P<flag>     f?    )    # Followed by an optional 'f'
+... """
+
+>>> m=redsl(re, {'a_num' : int, 'flag': bool})
+>>> m("123f")
+{'a_num': 123, 'flag': True}
+>>> 
+>>> m("123")
+{'a_num': 123, 'flag': False}
+>>> m("f")
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+  File "redsl.py", line 18, in redslcurried
+    mapped_dpp = {k : ppers[k](mapped_d[k])  for k in mapped_d}
+  File "redsl.py", line 18, in <dictcomp>
+    mapped_dpp = {k : ppers[k](mapped_d[k])  for k in mapped_d}
+ValueError: invalid literal for int() with base 10: ''
 #+END_SRC
+
+OOPS!!\\
+Not * but +
+#+BEGIN_SRC python
+>>> re = """
+... (?P<a_num>    [0-9]+)   # Get an integer
+... (?P<flag>     f?    )    # Followed by an optional 'f'
+... """
+>>> m=redsl(re, {'a_num' : int, 'flag': bool})
+>>> m("f")
+>>>
+#+END_SRC
+The nothing that you see is a =None= :-)
+** At shell
+#+BEGIN_SRC shell
+$ ./redsl.py IBM.A
+{'series': 'A', 'scrip': 'IBM', 'issued': False, 'sertype': 'Plain', 'rights': False}
+#+END_SRC
+
+Unfortunately currently the postprocessing dict (ppers) is hardwired
+into the script.
+
+So...
+* PROBLEM
+How to pass a post-processing dict at the shell???
