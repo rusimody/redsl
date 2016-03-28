@@ -2,12 +2,8 @@
 #+OPTIONS: toc:nil
 * Intro
 is a dsl for re's (regexps).
-ie You can put the re into a file rather than into ~r"""...~ strings
-
-Trivial??  Ok...
-
-But if you have named subgroups, you can postprocess the matched strings
-through a preprocessor dict =ppers=
+ie You can put the re into a file along with pposprocessors for named subgroups 
+through a preprocessor dict =postprocessors=
 * Changes
 - Merged postprocessors and re into one file
 - Currently default name is postprocessors.py
@@ -53,6 +49,31 @@ Not * but +
 #+END_SRC
 The nothing that you see is a =None= :-)
 ** At shell
+#+BEGIN_SRC shell
+$ cat repost.py
+from collections import defaultdict
+seriesmap = defaultdict(lambda : "No series type",
+                        {'.':"Plain", '-':"Preferred", '+':"Warrant"})
+postprocessors = {'issued' : bool, 'sertype': seriesmap, 'rights':bool}
+
+rexp = r"""
+# DSL (instantiation) for describing NYSE symbology
+# From https://www.nyse.com/publicdocs/nyse/markets/amex-options/ArcaDirectAPISpecVersion4_1.pdf
+# Symbology table pg 12
+
+(?=^.+$)				# There better be something >=1
+^					# From beginning
+(?P<scrip>		[A-Z]*)		# The base scrip
+(?P<sertype>		[.+-])?		# Series type char
+(?P<series>		[A-QS-Z])?	# Series
+(?P<rights>		[R])?		# Series
+(?P<issued>		[#])?		# issued char indicator
+$					# Thats all (there should be!)
+"""
+$ 
+#+END_SRC
+
+Then run it
 #+BEGIN_SRC shell
 $ ./redsl.py IBM.A
 {'series': 'A', 'scrip': 'IBM', 'issued': False, 'sertype': 'Plain', 'rights': False}
