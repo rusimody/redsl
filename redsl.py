@@ -2,11 +2,6 @@
 """Utility to make have re in a file
 And then post process the matched groups"""
 
-try: 
-    from postprocessors import ppers
-except ImportError:
-    ppers = {}
-
 def redsl(rexp, ppers):
     import re
     from collections import defaultdict
@@ -44,15 +39,11 @@ def identity(x) : return x
 #################### Script Stuff ############################
 
 def main():
-    from postprocessors import ppers
+    from importlib import import_module
     args = cmdline_parse()
-    dslfile, string, ppersfile  = args.re, args.string, args.postprocessors
-    try:
-        with open(dslfile, "rU") as f:   rexp = f.read()
-    except IOError as ie:
-        print("IOError: %s: %s" %  (ie.strerror, ie.filename))
-        return 1
-    
+    string, ppersfile  = args.string, args.postprocessors
+    mod = import_module(ppersfile)
+    ppers, rexp  = mod.postprocessors, mod.rexp
     trymatch = redsl(rexp, ppers)(string)
     print(trymatch if trymatch else "Match failed")
 
@@ -60,8 +51,7 @@ def cmdline_parse():
     from argparse import ArgumentParser
     parser = ArgumentParser(
         description='A DSL-ifier of the language of res with named groups')
-    parser.add_argument("-r",  "--re", default='redsl.txt',   help='File containing re')
-    parser.add_argument("-p",  "--postprocessors", default='postprocessors.py',
+    parser.add_argument("-p",  "--postprocessors", default='postprocessors',
                         help='Python file containing postprocessors')
     parser.add_argument("string", help="The string to be matched")
     ofgroup = parser.add_mutually_exclusive_group()    # Only one output format

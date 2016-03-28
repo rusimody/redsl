@@ -1,6 +1,6 @@
 #+TITLE: redsl
 #+OPTIONS: toc:nil
-* Redsl
+* Intro
 is a dsl for re's (regexps).
 ie You can put the re into a file rather than into ~r"""...~ strings
 
@@ -8,10 +8,14 @@ Trivial??  Ok...
 
 But if you have named subgroups, you can postprocess the matched strings
 through a preprocessor dict =ppers=
-* Version 3
-- Towards more generic dsl status
-- At shell: postprocessing still hardwired
-- Generic from inside python
+* Changes
+- Merged postprocessors and re into one file
+- Currently default name is postprocessors.py
+- It needs to have exportable as names
+  - rexp -- the rexp
+  - postprocessors -- a dictionary mapping names in rexp to functions
+    As a common special case if a (sub)dict is the value it is the matched value is looked up through this dict
+    See eg.
 * Usage
 ** Inside python
 #+BEGIN_SRC python
@@ -56,5 +60,4 @@ $ ./redsl.py IBM.A
 
 
 So...
-* postprocessors
-currently hardwired into a file postprocessors.py
+
