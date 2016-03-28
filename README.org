@@ -59,5 +59,3 @@ $ ./redsl.py IBM.A
 #+END_SRC
 
 
-So...
-

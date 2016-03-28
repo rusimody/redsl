@@ -34,29 +34,44 @@ TODO Need to errorcheck types"""
 def identity(x) : return x
 
 #################### Output formats ##########################
-# TODO
+def writejson(s):
+    from json import dump
+    from sys import stdout
+    dump(s,stdout)
+
+def writeyaml(s):
+    from yaml import dump
+    from sys import stdout
+    dump(s,stdout, default_flow_style=False)
+    
 
 #################### Script Stuff ############################
 
 def main():
     from importlib import import_module
     args = cmdline_parse()
-    string, ppersfile  = args.string, args.postprocessors
+    string, ppersfile  = args.string, args.file
     mod = import_module(ppersfile)
     ppers, rexp  = mod.postprocessors, mod.rexp
     trymatch = redsl(rexp, ppers)(string)
-    print(trymatch if trymatch else "Match failed")
+    if args.json:
+        writejson(trymatch)
+    elif args.yaml:
+        writeyaml(trymatch)
+    else:
+        print(trymatch if trymatch else "Match failed")
 
+        
 def cmdline_parse():
     from argparse import ArgumentParser
     parser = ArgumentParser(
         description='A DSL-ifier of the language of res with named groups')
-    parser.add_argument("-p",  "--postprocessors", default='postprocessors',
-                        help='Python file containing postprocessors')
+    parser.add_argument("-f",  "--file", default='repost',
+                        help='Python file containing re & postprocessors')
     parser.add_argument("string", help="The string to be matched")
     ofgroup = parser.add_mutually_exclusive_group()    # Only one output format
     ofgroup.add_argument("-J",  "--json", action='store_true',  help='Json output')
     ofgroup.add_argument("-Y",  "--yaml", action='store_true',  help='Yaml output')
     return parser.parse_args()
-    
+
 if __name__ == "__main__":   main()
