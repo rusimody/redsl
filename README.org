@@ -43,30 +43,39 @@ Not * but +
 >>> m("f")
 >>>
 #+END_SRC
-The nothing that you see is a =None= :-)
-** At shell
+The nothing that you see is a =None= :-) signifying no match!
+** Usage at shell
+Contents of =repost.py=
 #+BEGIN_SRC shell
-$ cat repost.py
-from collections import defaultdict
-seriesmap = defaultdict(lambda : "No series type",
-                        {'.':"Plain", '-':"Preferred", '+':"Warrant"})
-postprocessors = {'issued' : bool, 'sertype': seriesmap, 'rights':bool}
+"""dsl input for redsl
+Should have available for importing these two names
+- 'rexp' for regular exp
+- 'postprocessors' for dict of postprocessors
+need to be exactly those names; rest (eg seriesmap) is just helpers for 
+those two
+"""
 
-rexp = r"""
-# DSL (instantiation) for describing NYSE symbology
+# RE for describing NYSE symbology
 # From https://www.nyse.com/publicdocs/nyse/markets/amex-options/ArcaDirectAPISpecVersion4_1.pdf
 # Symbology table pg 12
+
+rexp = r"""
 
 (?=^.+$)				# There better be something >=1
 ^					# From beginning
 (?P<scrip>		[A-Z]*)		# The base scrip
 (?P<sertype>		[.+-])?		# Series type char
 (?P<series>		[A-QS-Z])?	# Series
-(?P<rights>		[R])?		# Series
+(?P<rights>		[R])?		# Rights (special case)
 (?P<issued>		[#])?		# issued char indicator
 $					# Thats all (there should be!)
 """
-$ 
+
+# Postprocessors for above
+from collections import defaultdict
+seriesmap = defaultdict(lambda : "No series type",
+                        {'.':"Plain", '-':"Preferred", '+':"Warrant"})
+postprocessors = {'issued' : bool, 'sertype': seriesmap, 'rights':bool}
 #+END_SRC
 
 Then run it
@@ -74,5 +83,18 @@ Then run it
 $ ./redsl.py IBM.A
 {'series': 'A', 'scrip': 'IBM', 'issued': False, 'sertype': 'Plain', 'rights': False}
 #+END_SRC
+* Other output formats
+Currently yaml and json.
+yaml needs pyyaml installed
+#+BEGIN_SRC shell
+$ ./redsl.py -Y IBM-A
+issued: false
+rights: false
+scrip: IBM
+series: A
+sertype: Preferred
 
+$ ./redsl.py -J IBM-A
+{"series": "A", "scrip": "IBM", "issued": false, "sertype": "Preferred", "rights": false}
+#+END_SRC
 
