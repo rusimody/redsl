@@ -2,8 +2,8 @@
 #+OPTIONS: toc:nil
 * Intro
 is a dsl for re's (regexps).
-ie You can put the re into a file along with pposprocessors for named subgroups 
-through a preprocessor dict =postprocessors=
+ie You can put the re into a file along with postprocessors for named subgroups 
+through a postprocessor dict =postprocessors=
 * Changes
 - Merged postprocessors and re into one file
 - Currently default name is postprocessors.py
@@ -39,11 +39,11 @@ ValueError: invalid literal for int() with base 10: ''
 OOPS!!\\
 Not * but +
 #+BEGIN_SRC python
->>> re = """
+>>> rexp = """
 ... (?P<a_num>    [0-9]+)   # Get an integer
 ... (?P<flag>     f?    )    # Followed by an optional 'f'
 ... """
->>> m=redsl(re, {'a_num' : int, 'flag': bool})
+>>> m=redsl(rexp, {'a_num' : int, 'flag': bool})
 >>> m("f")
 >>>
 #+END_SRC
