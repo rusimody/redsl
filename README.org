@@ -4,14 +4,6 @@
 is a dsl for re's (regexps).
 ie You can put the re into a file along with postprocessors for named subgroups 
 through a postprocessor dict =postprocessors=
-* Changes
-- Merged postprocessors and re into one file
-- Currently default name is postprocessors.py
-- It needs to have exportable as names
-  - rexp -- the rexp
-  - postprocessors -- a dictionary mapping names in rexp to functions
-    As a common special case if a (sub)dict is the value it is the matched value is looked up through this dict
-    See eg.
 * Usage
 ** Inside python
 #+BEGIN_SRC python

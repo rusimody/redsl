@@ -67,7 +67,7 @@ def cmdline_parse():
     parser = ArgumentParser(
         description='A DSL-ifier of the language of res with named groups')
     parser.add_argument("-f",  "--file", default='repost',
-                        help='Python file containing re & postprocessors')
+                        help='Python file containing re & postprocessors (without .py suffix)')
     parser.add_argument("string", help="The string to be matched")
     ofgroup = parser.add_mutually_exclusive_group()    # Only one output format
     ofgroup.add_argument("-J",  "--json", action='store_true',  help='Json output')

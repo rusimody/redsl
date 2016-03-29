@@ -1,4 +1,12 @@
 from collections import defaultdict
+"""dsl input for redsl
+The names
+'rexp' for regular exp
+and 'postprocessors' for dict of postprocessors
+need to be exactly those names; rest (eg seriesmap) is just helpers for 
+those two
+"""
+
 seriesmap = defaultdict(lambda : "No series type",
                         {'.':"Plain", '-':"Preferred", '+':"Warrant"})
 postprocessors = {'issued' : bool, 'sertype': seriesmap, 'rights':bool}
