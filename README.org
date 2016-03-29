@@ -1,15 +1,19 @@
 #+TITLE: redsl
 #+OPTIONS: toc:nil
 * Intro
-is a dsl for re's (regexps).
-ie You can put the re into a file along with postprocessors for named subgroups 
-through a postprocessor dict =postprocessors=
+Redsl is a dsl for re's (regexps).
+Put the regexp containing named groups into a file
+Along with postprocessors for the subgroups.
+
+Its also possible to import redsl from python and call it with the re and the postprocessor dict.
+This gives a special-cased version of =re.search=
 * Usage
 ** Inside python
 #+BEGIN_SRC python
+>>> from redsl import redsl
 >>> re = """
 ... (?P<a_num>    [0-9]*)   # Get an integer
-... (?P<flag>     f?    )    # Followed by an optional 'f'
+... (?P<flag>     f?    )   # Followed by an optional 'f'
 ... """
 
 >>> m=redsl(re, {'a_num' : int, 'flag': bool})
